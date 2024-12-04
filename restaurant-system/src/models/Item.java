@@ -63,17 +63,38 @@ public class Item {
     public void setDescription(String description) {
         this.description = description;
     }
-    //metode 1
-  public void updatePrice(double newPrice) {
+   // Method 1: Update price
+public void updatePrice(double newPrice) {
+    try {
+        if (newPrice < 0) {
+            throw new IllegalArgumentException("Price cannot be negative.");
+        }
+
         this.price = newPrice;
         System.out.println("The price of " + name + " has been updated to: " + newPrice);
+    } catch (IllegalArgumentException e) {
+        System.out.println("Error updating price: " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("Unexpected error while updating price: " + e.getMessage());
     }
-  //Methode 2
-  // Method to update the description of the item
-    public void updateDescription(String newDescription) {
+}
+
+// Method 2: Update description
+public void updateDescription(String newDescription) {
+    try {
+        if (newDescription == null || newDescription.isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be null or empty.");
+        }
+
         this.description = newDescription;
         System.out.println("The description of " + name + " has been updated.");
+    } catch (IllegalArgumentException e) {
+        System.out.println("Error updating description: " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("Unexpected error while updating description: " + e.getMessage());
     }
+}
+
      // Method to display item information (for testing)
     public void displayItemInfo() {
         System.out.println("Item ID: " + itemId);

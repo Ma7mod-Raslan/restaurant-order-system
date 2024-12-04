@@ -85,38 +85,89 @@ public class User {
         return orderHistory;
     }
     // Methods
-     //Method 1 (Subscribe to Elite service)
-     public void subscribeToElite() {
+    // Method 1 (Subscribe to Elite service)
+public void subscribeToElite() {
+    try {
         if (!isEliteCustomer) {
             isEliteCustomer = true;
             System.out.println("You are now an Elite Customer! Enjoy your 10% discount on future orders.");
         } else {
             System.out.println("You are already an Elite Customer.");
         }
+    } catch (Exception e) {
+        System.out.println("Error subscribing to Elite service: " + e.getMessage());
     }
-//Method 2(  Update profile details)
- public void updateProfile(Address newAddress, String newPassword) {
+}
+
+// Method 2 (Update profile details)
+public void updateProfile(Address newAddress, String newPassword) {
+    try {
+        if (newAddress == null) {
+            throw new IllegalArgumentException("New address cannot be null.");
+        }
+        if (newPassword == null || newPassword.isEmpty()) {
+            throw new IllegalArgumentException("New password cannot be null or empty.");
+        }
+
         this.address = newAddress;
         this.password = newPassword;
         System.out.println("Profile updated successfully.");
+    } catch (IllegalArgumentException e) {
+        System.out.println("Error updating profile: " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("Unexpected error while updating profile: " + e.getMessage());
     }
- //Method 2(Update order history)
- public void updateHistory(Order newOrder) {
+}
+
+// Method 3 (Update order history)
+public void updateHistory(Order newOrder) {
+    try {
+        if (newOrder == null) {
+            throw new IllegalArgumentException("Order cannot be null.");
+        }
+
         this.orderHistory.add(newOrder);
         System.out.println("Order history updated.");
+    } catch (IllegalArgumentException e) {
+        System.out.println("Error updating order history: " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("Unexpected error while updating order history: " + e.getMessage());
     }
-    // Print user info (for testing)
-    public void printUserInfo() {
+}
+
+// Print user info (for testing)
+public void printUserInfo() {
+    try {
         System.out.println("User Info:");
         System.out.println("Name: " + name);
         System.out.println("Username: " + username);
+
+        if (address == null) {
+            throw new IllegalStateException("Address is not set.");
+        }
         System.out.println("Address: " + address);
+
         System.out.println("Elite Status: " + (isEliteCustomer ? "Yes" : "No"));
+
+        if (orderHistory == null || orderHistory.isEmpty()) {
+            throw new IllegalStateException("Order history is empty.");
+        }
+
         System.out.println("Order History: ");
         for (Order order : orderHistory) {
-            System.out.println("  - Order ID: " + order.getOrderID() + ", Total Price: " + order.getTotalPrice());
+            if (order == null) {
+                System.out.println("Error: Order is null.");
+            } else {
+                System.out.println("  - Order ID: " + order.getOrderID() + ", Total Price: " + order.getTotalPrice());
+            }
         }
+    } catch (IllegalStateException e) {
+        System.out.println("Error displaying user info: " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("Unexpected error while printing user info: " + e.getMessage());
     }
+}
+
     
     @Override
     public String toString() {

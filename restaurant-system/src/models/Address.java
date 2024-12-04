@@ -51,26 +51,50 @@ public class Address {
     }
 
     // Validate the address fields
-    public boolean validate() {
-        boolean isValid = !street.isEmpty() && !city.isEmpty() && !postalCode.isEmpty() && !country.isEmpty();
+public boolean validate() {
+    try {
+        // Ensure none of the address fields are null or empty
+        boolean isValid = (street != null && !street.isEmpty()) &&
+                          (city != null && !city.isEmpty()) &&
+                          (postalCode != null && !postalCode.isEmpty()) &&
+                          (country != null && !country.isEmpty());
+        
         if (isValid) {
             System.out.println("Address is valid.");
         } else {
             System.out.println("Address is incomplete. Please fill all fields.");
         }
+        
         return isValid;
+    } catch (Exception e) {
+        System.out.println("Error validating the address: " + e.getMessage());
+        return false; // Return false if an error occurs
     }
-    
+}
+
 // Override toString method to display the address
-  
-    @Override
-    public String toString() {
-    return "Address:\n" +
-           "Street: " + street + "\n" +
-           "City: " + city + "\n" +
-           "Postal Code: " + postalCode + "\n" +
-           "Country: " + country;
-   }
+@Override
+public String toString() {
+    try {
+        // Check if any of the address fields are null before using them
+        if (street == null || city == null || postalCode == null || country == null) {
+            throw new NullPointerException("One or more address fields are null.");
+        }
+        
+        return "Address:\n" +
+               "Street: " + street + "\n" +
+               "City: " + city + "\n" +
+               "Postal Code: " + postalCode + "\n" +
+               "Country: " + country;
+    } catch (NullPointerException e) {
+        System.out.println("Error: " + e.getMessage());
+        return "Address details are incomplete or invalid.";
+    } catch (Exception e) {
+        System.out.println("Unexpected error in toString method: " + e.getMessage());
+        return "Error in displaying address.";
+    }
+}
+
 
 }
 

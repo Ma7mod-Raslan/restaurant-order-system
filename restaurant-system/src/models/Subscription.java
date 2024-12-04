@@ -50,16 +50,20 @@ public class Subscription {
         return isSubscribed;
     }
 
-    // Static method to get all subscribed users 
-    public static List<User> getSubscribedUsers() {
+  // Static method to get all subscribed users 
+public static List<User> getSubscribedUsers() {
+    try {
         return subscribedUsers;
+    } catch (Exception e) {
+        System.out.println("Error retrieving subscribed users: " + e.getMessage());
+        return new ArrayList<>(); // Return an empty list if an error occurs
     }
-
-    // Method to subscribe a user
-    public void subscribe(User user) {
+}
+// Method to subscribe a user
+public void subscribe(User user) {
+    try {
         if (isSubscribed) {
-            System.out.println("User is already subscribed.");
-            return;
+            throw new IllegalStateException("User is already subscribed.");
         }
 
         // Activate subscription
@@ -71,28 +75,45 @@ public class Subscription {
         System.out.println("User " + user.getName() + " subscribed successfully!");
         System.out.println("Subscription started on: " + subscriptionStart);
         System.out.println("Subscription will end on: " + subscriptionEnd);
+    } catch (IllegalStateException e) {
+        System.out.println(e.getMessage());
+    } catch (Exception e) {
+        System.out.println("An unexpected error occurred while subscribing: " + e.getMessage());
     }
+}
 
-    // Method to unsubscribe a user
-    public void unsubscribe(User user) {
+// Method to unsubscribe a user
+public void unsubscribe(User user) {
+    try {
         if (!isSubscribed) {
-            System.out.println("User is not currently subscribed.");
-            return;
+            throw new IllegalStateException("User is not currently subscribed.");
         }
 
         isSubscribed = false;
         subscribedUsers.remove(user); // Remove the user from the subscribed users list
         System.out.println("User " + user.getName() + " unsubscribed successfully.");
+    } catch (IllegalStateException e) {
+        System.out.println(e.getMessage());
+    } catch (Exception e) {
+        System.out.println("An unexpected error occurred while unsubscribing: " + e.getMessage());
     }
+}
 
-    // Check if the subscription is active based on the current date
-    public boolean isSubscriptionActive() {
+
+// Check if the subscription is active based on the current date
+public boolean isSubscriptionActive() {
+    try {
         LocalDate currentDate = LocalDate.now();
         return isSubscribed && (currentDate.isAfter(subscriptionStart) || currentDate.isEqual(subscriptionStart)) && currentDate.isBefore(subscriptionEnd);
+    } catch (Exception e) {
+        System.out.println("Error checking subscription status: " + e.getMessage());
+        return false; // Return false if there is an error
     }
+}
 
-    // Apply discount to an order if subscription is active
-    public void applyDiscount(Order order) {
+// Apply discount to an order if subscription is active
+public void applyDiscount(Order order) {
+    try {
         if (isSubscriptionActive()) {
             double discountAmount = order.getTotalPrice() * 0.10; // 10% discount
             order.setTotalPrice(order.getTotalPrice() - discountAmount);
@@ -100,7 +121,10 @@ public class Subscription {
         } else {
             System.out.println("No active subscription. Discount not applied.");
         }
+    } catch (Exception e) {
+        System.out.println("Error applying discount: " + e.getMessage());
     }
+  }
 }
 
  

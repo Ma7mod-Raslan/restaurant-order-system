@@ -8,10 +8,30 @@ public class Address {
 
     // Constructor to initialize the address fields
     public Address(String street, String city, String postalCode, String country) {
-        this.street = street;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.country = country;
+       try {
+            if (street == null || street.isEmpty()) {
+                throw new IllegalArgumentException("Street cannot be null or empty.");
+            }
+            if (city == null || city.isEmpty()) {
+                throw new IllegalArgumentException("City cannot be null or empty.");
+            }
+            if (postalCode == null || postalCode.isEmpty()) {
+                throw new IllegalArgumentException("Postal code cannot be null or empty.");
+            }
+            if (country == null || country.isEmpty()) {
+                throw new IllegalArgumentException("Country cannot be null or empty.");
+            }
+            this.street = street;
+            this.city = city;
+            this.postalCode = postalCode;
+            this.country = country;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error initializing address: " + e.getMessage());
+        }
+//        setStreet(street);
+//        setCity(city);
+//        setPostalCode(postalCode);
+//        setCountry(country);
     }
     
 
@@ -22,7 +42,14 @@ public class Address {
     }
 
     public void setStreet(String street) {
-        this.street = street;
+         try {
+            if (street == null || street.isEmpty()) {
+                throw new IllegalArgumentException("Street cannot be null or empty.");
+            }
+            this.street = street;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error setting street: " + e.getMessage());
+        }
     }
 
     public String getCity() {
@@ -30,7 +57,14 @@ public class Address {
     }
 
     public void setCity(String city) {
-        this.city = city;
+       try {
+            if (city == null || city.isEmpty()) {
+                throw new IllegalArgumentException("City cannot be null or empty.");
+            }
+            this.city = city;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error setting city: " + e.getMessage());
+        }
     }
 
 
@@ -39,61 +73,77 @@ public class Address {
     }
 
     public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+        try {
+            if (postalCode == null || postalCode.isEmpty()) {
+                throw new IllegalArgumentException("Postal code cannot be null or empty.");
+            }
+            this.postalCode = postalCode;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error setting postal code: " + e.getMessage());
+        }
     }
 
     public String getCountry() {
+        
         return country;
     }
 
     public void setCountry(String country) {
-        this.country = country;
+        try {
+            if (country == null || country.isEmpty()) {
+                throw new IllegalArgumentException("Country cannot be null or empty.");
+            }
+            this.country = country;
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error setting country: " + e.getMessage());
+        }
     }
 
     // Validate the address fields
-public boolean validate() {
-    try {
-        // Ensure none of the address fields are null or empty
-        boolean isValid = (street != null && !street.isEmpty()) &&
-                          (city != null && !city.isEmpty()) &&
-                          (postalCode != null && !postalCode.isEmpty()) &&
-                          (country != null && !country.isEmpty());
-        
-        if (isValid) {
+    public boolean validate() {
+          try {
+            if (street.isEmpty() || city.isEmpty() || postalCode.isEmpty() || country.isEmpty()) {
+                System.out.println("Address is incomplete. Please fill all fields.");
+                return false;
+            }
             System.out.println("Address is valid.");
-        } else {
-            System.out.println("Address is incomplete. Please fill all fields.");
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error validating address: " + e.getMessage());
+            return false;
         }
-        
-        return isValid;
-    } catch (Exception e) {
-        System.out.println("Error validating the address: " + e.getMessage());
-        return false; // Return false if an error occurs
+//        boolean isValid = !street.isEmpty() && !city.isEmpty() && !postalCode.isEmpty() && !country.isEmpty();
+//        if (isValid) {
+//            System.out.println("Address is valid.");
+//        } else {
+//            System.out.println("Address is incomplete. Please fill all fields.");
+//        }
+//        return isValid;
+//        try {
+//            // Validate each field individually
+//            setStreet(street);
+//            setCity(city);
+//            setPostalCode(postalCode);
+//            setCountry(country);
+//
+//            System.out.println("Address is valid.");
+//            return true;
+//        } catch (IllegalArgumentException e) {
+//            System.out.println("Address validation failed: " + e.getMessage());
+//            return false;
+//        }
     }
-}
-
+    
 // Override toString method to display the address
-@Override
-public String toString() {
-    try {
-        // Check if any of the address fields are null before using them
-        if (street == null || city == null || postalCode == null || country == null) {
-            throw new NullPointerException("One or more address fields are null.");
-        }
-        
-        return "Address:\n" +
-               "Street: " + street + "\n" +
-               "City: " + city + "\n" +
-               "Postal Code: " + postalCode + "\n" +
-               "Country: " + country;
-    } catch (NullPointerException e) {
-        System.out.println("Error: " + e.getMessage());
-        return "Address details are incomplete or invalid.";
-    } catch (Exception e) {
-        System.out.println("Unexpected error in toString method: " + e.getMessage());
-        return "Error in displaying address.";
-    }
-}
+  
+    @Override
+    public String toString() {
+    return "Address:\n" +
+           "Street: " + street + "\n" +
+           "City: " + city + "\n" +
+           "Postal Code: " + postalCode + "\n" +
+           "Country: " + country;
+   }
 
 
 }
